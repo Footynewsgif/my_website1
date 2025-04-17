@@ -5,29 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Style fix to allow scrolling back to the top -->
     <style>
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;  /* Prevent horizontal scrolling */
+            overflow-x: hidden;
         }
-
         .login-container {
             min-height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             padding: 20px;
-            overflow-y: auto; /* Allow scrolling */
+            overflow-y: auto;
         }
-
         .login-container h1 {
             margin-bottom: 20px;
         }
-
         input[type="text"],
         input[type="password"] {
             width: 100%;
@@ -36,7 +31,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
         button {
             width: 100%;
             padding: 10px;
@@ -46,16 +40,13 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #2980b9;
         }
-
         p {
             margin-top: 15px;
             text-align: center;
         }
-
     </style>
 </head>
 <body>
@@ -92,13 +83,20 @@
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const rememberMe = document.getElementById('rememberMe').checked;
-            const storedData = JSON.parse(localStorage.getItem('userAccount'));
 
-            if (storedData && storedData.username === username && storedData.password === password) {
+            // Get users array from localStorage
+            const users = JSON.parse(localStorage.getItem('userAccounts')) || [];
+
+            // Check if user exists and password matches
+            const matchingUser = users.find(user =>
+                user.username === username && user.password === password
+            );
+
+            if (matchingUser) {
                 if (rememberMe) {
                     localStorage.setItem('isLoggedIn', 'true');
                 }
-                sessionStorage.setItem('isLoggedInSession', 'true'); // used for current session
+                sessionStorage.setItem('isLoggedInSession', 'true');
                 window.location.href = 'main.html';
             } else {
                 document.getElementById('loginMessage').textContent = 'Invalid username or password.';
